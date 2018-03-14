@@ -1,0 +1,8 @@
+10	www.newsmill.com
+5	www.whatsup.com
+20	www.newstoday.com
+30 	www.dailaynews.com
+2	www.abc.com
+15	www.google.com
+30	www.dropboxc.xom
+
