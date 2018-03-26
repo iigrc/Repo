@@ -1,2 +1,0 @@
-# myscritps
-Testing scripts
