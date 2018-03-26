@@ -8,13 +8,10 @@ services:
             - ./dockerproject.gq.pem:/etc/ssl/certs/dockerproject.gq.pem
             - ./dockerproject.gq.pem.ocsp:/etc/ssl/certs/dockerproject.gq.pem.ocsp
             - ./dhparm.pem:/etc/ssl/certs/dhparm.pem
-#            - /var/run/docker.sock:/var/run/docker.sock
-        ports:
             - "80:80"
             - "443:443"
         depends_on:
             - web
-#            - redis
         networks:
             - code-network
     web:
@@ -25,17 +22,10 @@ services:
         volumes:
             - ./code:/code
             - ./site.conf:/etc/nginx/conf.d/default.conf
-            #- ./dockerproject.gq.pem:/etc/ssl/certs/dockerproject.gq.pem
             - ./privkey.pem:/etc/ssl/certs/privkey.pem 
             - ./fullchain.pem:/etc/ssl/certs/fullchain.pem
-#        environment:
-#            - REDIS_HOST=redis
-
-#        links:
-#            - redis
         depends_on:
             - php
-#            - redis
         networks:
             - code-network
     php:
@@ -51,19 +41,12 @@ services:
             - "3306:3306"
         environment:
             - MYSQL_ROOT_PASSWORD=verysecurepassword
-#        networks:
-#            - code-network
     redis: 
         image: redis:alpine
         ports:
             - "6379:6379"
         environment:
             - REDIS_PASSWORD=password123
-#        volumes:
-#            - ./redis_data:/data
-#            - ./redisscript.sh:/sbin/redisscript.sh
-#        networks:
-#            - code-network
 networks:
     code-network:
         driver: bridge
