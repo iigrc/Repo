@@ -8,6 +8,7 @@ services:
             - ./dockerproject.gq.pem:/etc/ssl/certs/dockerproject.gq.pem
             - ./dockerproject.gq.pem.ocsp:/etc/ssl/certs/dockerproject.gq.pem.ocsp
             - ./dhparm.pem:/etc/ssl/certs/dhparm.pem
+        ports:
             - "80:80"
             - "443:443"
         depends_on:
