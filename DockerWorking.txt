@@ -1,0 +1,81 @@
+[ansible@ansible playbooks]$ ansible docker -s -a "docker-compose -f Comprigo/docker-compose.yml up -d"
+
+docker.hostname.com | SUCCESS | rc=0 >>
+
+fpm: Pulling from library/php
+
+Digest: sha256:b4d7dc2cf7dac4a47b9e1aac14c21660c488450990d645aca51114acc48dc5c3
+
+Status: Downloaded newer image for php:fpm
+
+latest: Pulling from library/nginx
+
+Digest: sha256:c4ee0ecb376636258447e1d8effb56c09c75fe7acf756bf7c13efadf38aa0aca
+
+Status: Downloaded newer image for nginx:latest
+
+latest: Pulling from library/haproxy
+
+Digest: sha256:b5b1b995e3eaa0b52d5e99145e3db7e59bc1801f05aa0e976a68d439633cc4c2
+
+Status: Downloaded newer image for haproxy:latest
+
+alpine: Pulling from library/redis
+
+Digest: sha256:692147c8a1673fc172f12724f5313e00b8459291e3fe17a10856b4d2c0bf56fb
+
+Status: Downloaded newer image for redis:alpine
+
+latest: Pulling from library/mysql
+
+Digest: sha256:691c55aabb3c4e3b89b953dd2f022f7ea845e5443954767d321d5f5fa394e28c
+
+Status: Downloaded newer image for mysql:latestCreating network "comprigo_default" with the default driver
+
+Creating network "comprigo_code-network" with driver "bridge"
+
+Pulling php (php:fpm)...
+
+Pulling web (nginx:latest)...
+
+Pulling haproxy (haproxy:latest)...
+
+Pulling redis (redis:alpine)...
+
+Pulling mysql (mysql:latest)...
+
+Creating comprigo_mysql_1 ... done
+
+Creating comprigo_redis_1 ... done
+
+Creating comprigo_php_1   ... done
+
+Creating comprigo_web_1   ... done
+
+Creating comprigo_haproxy_1 ... done
+
+
+
+
+
+[ansible@ansible playbooks]$ ansible docker -s -a "docker ps"
+
+docker.hostname.com | SUCCESS | rc=0 >>
+
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                    NAMES
+
+5f024928f5ba        haproxy:latest      "/docker-entrypoin..."   42 seconds ago      Up 41 seconds       0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp                 comprigo_haproxy_1
+
+97a7d7d6778b        nginx:latest        "nginx -g 'daemon ..."   43 seconds ago      Up 42 seconds       0.0.0.0:8080->8080/tcp, 80/tcp, 0.0.0.0:8443->8443/tcp   comprigo_web_1
+
+d918e242f9a1        redis:alpine        "docker-entrypoint..."   44 seconds ago      Up 43 seconds       0.0.0.0:6379->6379/tcp                                   comprigo_redis_1
+
+244da08ae7a3        mysql:latest        "docker-entrypoint..."   44 seconds ago      Up 43 seconds       0.0.0.0:3306->3306/tcp                                   comprigo_mysql_1
+
+4c8fc3052e13        php:fpm             "docker-php-entryp..."   44 seconds ago      Up 43 seconds       9000/tcp                                                 comprigo_php_1
+
+
+
+[ansible@ansible playbooks]$
+
+

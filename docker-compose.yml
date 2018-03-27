@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+    haproxy:
+        image: haproxy:latest
+        volumes:
+            - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+            - ./dockerproject.gq.pem:/etc/ssl/certs/dockerproject.gq.pem
+            - ./dockerproject.gq.pem.ocsp:/etc/ssl/certs/dockerproject.gq.pem.ocsp
+            - ./dhparm.pem:/etc/ssl/certs/dhparm.pem
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - web
+        networks:
+            - code-network
+    web:
+        image: nginx:latest
+        ports:
+            - "8080:8080"
+            - "8443:8443"
+        volumes:
+            - ./code:/code
+            - ./site.conf:/etc/nginx/conf.d/default.conf
+            - ./privkey.pem:/etc/ssl/certs/privkey.pem 
+            - ./fullchain.pem:/etc/ssl/certs/fullchain.pem
+        depends_on:
+            - php
+        networks:
+            - code-network
+    php:
+        image: php:fpm
+        volumes:
+            - ./code:/code
+            - ./www.conf:/usr/local/etc/php-fpm.d/www.conf
+        networks:
+            - code-network
+    mysql:
+        image: mysql:latest
+        ports:
+            - "3306:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=verysecurepassword
+    redis: 
+        image: redis:alpine
+        ports:
+            - "6379:6379"
+        environment:
+            - REDIS_PASSWORD=password123
+networks:
+    code-network:
+        driver: bridge
