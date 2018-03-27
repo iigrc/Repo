@@ -1,0 +1,11 @@
+--- # Deploying docker-compose
+- hosts: docker
+  become: yes
+  connection: ssh
+  gather_facts: no
+  tasks:
+  - name: Deploying docker-commpose
+    docker_service:
+      project_src: Comprigo/
+      state: present
+
